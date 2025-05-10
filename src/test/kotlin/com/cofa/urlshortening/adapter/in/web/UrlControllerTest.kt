@@ -1,5 +1,6 @@
 package com.cofa.urlshortening.adapter.`in`.web
 
+import com.cofa.urlshortening.adapter.`in`.web.api.UrlController
 import com.cofa.urlshortening.adapter.`in`.web.dto.ShortenUrlRequest
 import com.cofa.urlshortening.domain.port.incoming.UrlService
 import com.fasterxml.jackson.databind.ObjectMapper

@@ -1,4 +1,4 @@
-package com.cofa.urlshortening.adapter.`in`.web
+package com.cofa.urlshortening.adapter.`in`.web.api
 
 import com.cofa.urlshortening.adapter.`in`.web.dto.OriginalUrlResponse
 import com.cofa.urlshortening.adapter.`in`.web.dto.ShortenUrlRequest
@@ -9,16 +9,15 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/v1/urls")
-class UrlController (private val urlService:UrlService){
+class UrlController (private val urlService:UrlService) : IUrlController{
     @PostMapping
-     fun shorten(@RequestBody @Valid request: ShortenUrlRequest): ResponseEntity<ShortenUrlResponse> {
+    override fun shorten(@RequestBody @Valid request: ShortenUrlRequest): ResponseEntity<ShortenUrlResponse> {
         val shortCode = urlService.shortenUrl(request.originalUrl)
         return ResponseEntity.ok(ShortenUrlResponse(shortCode))
     }
 
     @GetMapping("/{identifier}")
-     fun resolve(@PathVariable identifier: String): ResponseEntity<OriginalUrlResponse> {
+    override fun resolve(@PathVariable identifier: String): ResponseEntity<OriginalUrlResponse> {
         val originalUrl = urlService.getOriginalUrl(identifier)
         return ResponseEntity.ok(OriginalUrlResponse(originalUrl))
     }

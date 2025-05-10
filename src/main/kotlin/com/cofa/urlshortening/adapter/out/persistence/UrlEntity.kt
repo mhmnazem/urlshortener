@@ -3,7 +3,7 @@ package com.cofa.urlshortening.adapter.out.persistence
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "url_mappings")
+@Table(name = "urls")
 class UrlEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,6 @@
 package com.cofa.urlshortening.application
 
+import com.cofa.urlshortening.adapter.`in`.web.exception.UrlNotFoundException
 import com.cofa.urlshortening.adapter.out.hashing.IdEncoder
 import com.cofa.urlshortening.domain.model.Url
 import com.cofa.urlshortening.domain.port.outgoing.UrlRepository
@@ -65,10 +66,12 @@ class UrlServiceImplTest {
 
     @Test
     fun `should throw if short code is not found`() {
-        whenever(urlRepository.findByShortCode("notfound")).thenReturn(null)
+        whenever(urlRepository.findByShortCode("not-found")).thenReturn(null)
 
-        assertThrows<NoSuchElementException> {
-            service.getOriginalUrl("notfound")
+        val exception = assertThrows<UrlNotFoundException> {
+            service.getOriginalUrl("not-found")
         }
+
+        assertEquals("Short URL not-found not found", exception.message)
     }
 }
