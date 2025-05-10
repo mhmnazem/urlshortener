@@ -21,6 +21,13 @@ A modern, production-ready URL shortener built with **Kotlin** and **Spring Boot
 - Maven
 - Swagger (springdoc-openapi)
 - Docker
+## Installation
+
+### Clone the Repository
+```bash
+# Clone the repository:
+git clone https://github.com/mhmnazem/urlshortener.git
+```
 
 ## How to Run
 
@@ -79,6 +86,12 @@ curl -X POST http://localhost:8080/api/v1/shorten \
 ### Retrieve Original URL
 
 **GET** `/api/v1/abc123`  
+
+**Curl Example:**
+```bash
+curl http://localhost:8080/api/v1/abc123
+```
+
 **Response:**
 ```json
 {
@@ -86,9 +99,5 @@ curl -X POST http://localhost:8080/api/v1/shorten \
 }
 ```
 
-**Curl Example:**
 
-```bash
-curl http://localhost:8080/api/v1/abc123
-```
 
