@@ -1,5 +1,8 @@
 package com.cofa.urlshortening.adapter.out.hashing
 
+import org.springframework.stereotype.Component
+
+@Component
 class Base62IdEncoder : IdEncoder {
 
     override fun encode(id: Long): String {

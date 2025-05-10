@@ -1,5 +1,6 @@
 package com.cofa.urlshortening.application
 
+import com.cofa.urlshortening.adapter.`in`.web.exception.UrlNotFoundException
 import com.cofa.urlshortening.adapter.out.hashing.IdEncoder
 import com.cofa.urlshortening.domain.model.Url
 import com.cofa.urlshortening.domain.port.incoming.UrlService
@@ -15,25 +16,18 @@ class UrlServiceImpl(
 
     @Transactional
     override fun shortenUrl(originalUrl: String): String {
-        // Return existing short code if URL already exists
         urlRepository.findByOriginalUrl(originalUrl)?.let {
-            return it.shortCode ?: throw IllegalStateException("Short code cannot be null")
+            return it.shortCode ?: throw IllegalStateException("Short code is null for existing URL")
         }
 
-        // Step 1: Save the original URL to get the generated ID
         val saved = urlRepository.save(Url(id = null, originalUrl = originalUrl, shortCode = ""))
-
-        // Step 2: Generate short code from ID
         val code = idEncoder.encode(saved.id!!)
-
-        // Step 3: Update the entity with the short code
         val updated = saved.copy(shortCode = code)
         urlRepository.save(updated)
         return code
-
     }
 
     override fun getOriginalUrl(shortCode: String): String =
         urlRepository.findByShortCode(shortCode)?.originalUrl
-            ?: throw NoSuchElementException("URL not found")
+            ?: throw UrlNotFoundException("Short URL $shortCode not found")
 }
