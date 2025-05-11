@@ -67,14 +67,6 @@ SPRING_PROFILES_ACTIVE=dev ./mvnw spring-boot:run
   "url": "https://example.com/long-page"
 }
 ```
-
-**Response:**
-```json
-{
-  "shortUrl": "http://localhost:8080/abc123"
-}
-```
-
 **Curl Example:**
 
 ```bash
@@ -82,6 +74,13 @@ curl -X POST http://localhost:8080/api/v1/shorten \
      -H "Content-Type: application/json" \
      -d '{"url": "https://example.com/long-page"}'
 ```
+**Response:**
+```json
+{
+  "shortUrl": "http://localhost:8080/abc123"
+}
+```
+
 
 ### Retrieve Original URL
 
@@ -99,5 +98,26 @@ curl http://localhost:8080/api/v1/abc123
 }
 ```
 
+## Logic Overview
 
+- Incoming URLs are stored in the database with an auto-generated numeric ID.
+- The ID is encoded to a Base62 string to create a short, unique identifier.
+- The service maps the short identifier to the original URL for future lookups.
+- Hexagonal Architecture ensures a clear separation of concerns between domain logic, infrastructure, and API layers.
+
+## Scalability & Maintenance
+
+- Stateless design allows horizontal scaling across multiple instances.
+- Base62+ID avoids hash collisions and supports high performance.
+- Uses PostgreSQL for durability and indexing performance; H2 for testing.
+- Clean modular structure (Hexagonal Architecture) simplifies maintenance and future changes.
+
+## Next Steps
+
+- Add URL expiration and usage analytics.
+- Implement rate limiting per client IP to avoid abuse.
+- Add custom aliases for short URLs.
+- Switch to distributed ID generation (e.g., Snowflake, UUID, or Redis-based).
+- Add metrics and monitoring (e.g., Prometheus + Grafana).
+- Include security and user management for multi-tenant support.
 
